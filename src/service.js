@@ -1,56 +1,66 @@
 import axios from 'axios';
 
-axios.defaults.baseURL = process.env.REACT_APP_API_URL;
+const apiUrl = process.env.REACT_APP_API_URL;
 
-axios.interceptors.response.use(
-  response => response,  
-  error => {
-    console.error('API Error:', error.response ? error.response.data : error.message);
-    return Promise.reject(error);  
-  }
-);
+axios.defaults.baseURL = apiUrl;
 
 export default {
   getTasks: async () => {
     try {
-      const result = await axios.get('/items');
+      const result = await axios.get(`${apiUrl}/items`);
       return result.data;
     } catch (error) {
-      console.error('Error fetching tasks:', error);
-      return []; 
+      console.log(
+        "eroor in getItems",
+        error.response ? error.response.data : error.message
+      );
     }
   },
 
   addTask: async (name) => {
     try {
-      console.log('addTask', name);
-      const result = await axios.post('/items', { name });
+      const result = await axios.post(`${apiUrl}/items`, { name });
       return result.data;
     } catch (error) {
-      console.error('Error adding task:', error);
-      return {};  
+      console.log(
+        "eroor in addItem",
+        error.response ? error.response.data : error.message
+      );
     }
   },
-
+  getTasksById: async (id) => {
+    try {
+      const result = await axios.get(`${apiUrl}/items/${id}`);
+      return result.data;
+    } catch (error) {
+      console.log(
+        "eroor in getItemsById",
+        error.response ? error.response.data : error.message
+      );
+    }
+  },
   setCompleted: async (id, isComplete) => {
     try {
-      console.log('setCompleted', { id, isComplete });
-      const result = await axios.put(`/items/${id}`, { isComplete });
+      const result = await axios.put(`${apiUrl}/items/${id}`, {
+        isComplete,
+      });
       return result.data;
     } catch (error) {
-      console.error('Error updating task:', error);
-      return {};  
+      console.log(
+        "eroor in putItem",
+        error.response ? error.response.data : error.message
+      );
     }
   },
-
   deleteTask: async (id) => {
     try {
-      console.log('deleteTask', id);
-      const result = await axios.delete(`/items/${id}`);
+      const result = await axios.delete(`${apiUrl}/items/${id}`);
       return result.data;
     } catch (error) {
-      console.error('Error deleting task:', error);
-      return {};  
+      console.log(
+        "eroor in deleteItem",
+        error.response ? error.response.data : error.message
+      );
     }
-  }
+  },
 };
