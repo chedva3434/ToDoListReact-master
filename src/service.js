@@ -1,7 +1,8 @@
 import axios from 'axios';
 
-const apiUrl = process.env.REACT_APP_API_URL;
-
+//const apiUrl = process.env.REACT_APP_API_URL;
+const apiUrl="https://localhost:7199";
+//const apiUrl=
 axios.defaults.baseURL = apiUrl;
 
 axios.interceptors.response.use(
@@ -15,11 +16,25 @@ axios.interceptors.response.use(
 export default {
   getTasks: async () => {
     try {
-      const result = await axios.get('/items');
+      console.log(apiUrl);
+      
+      const result = await axios.get(`${apiUrl}/items`);
       return result.data;
     } catch (error) {
       console.error('Error fetching tasks:', error);
       return []; 
+    }
+  },
+
+  getTasksById: async (id) => {
+    try {
+      const result = await axios.get(`/items/${id}`);
+      return result.data;
+    } catch (error) {
+      console.log(
+        "eroor in getItemsById",
+        error.response ? error.response.data : error.message
+      );
     }
   },
 
@@ -34,11 +49,10 @@ export default {
     }
   },
 
-  setCompleted: async (id, isComplete) => {
+  setCompleted: async (Id, isCompleted) => {
     try {
-      console.log('setCompleted', { id, isComplete });
-      const result = await axios.put(`/items/${id}`, { isComplete });
-      console.log(result.data)
+      console.log('setCompleted', { Id, isCompleted });  // הדפסת הערכים שנשלחים
+      const result = await axios.put(`/Items/${Id}`, { isCompleted });
       return result.data;
     } catch (error) {
       console.error('Error updating task:', error);
