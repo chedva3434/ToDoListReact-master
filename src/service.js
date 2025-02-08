@@ -38,6 +38,7 @@ export default {
     try {
       console.log('setCompleted', { id, isComplete });
       const result = await axios.put(`/items/${id}`, { isComplete });
+      console.log(result.data)
       return result.data;
     } catch (error) {
       console.error('Error updating task:', error);
